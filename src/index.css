@@ -1,0 +1,23 @@
+*´ {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100dvh;
+  padding: 0 15px;
+}
+
+button {
+  border: 0;
+  padding: 6px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.containerTodoApp {
+  width: 100%;
+  max-width: 800px;
+  margin: 100px auto 0 auto;
+}

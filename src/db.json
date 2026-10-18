@@ -1,0 +1,30 @@
+{
+  "notas": [
+    {
+      "id": "1",
+      "text": "Aprender react",
+      "completed": true
+    },
+    {
+      "id": "2",
+      "text": "Hacer ejercicio",
+      "completed": true
+    },
+    {
+      "id": "3",
+      "text": "Leer un libro",
+      "completed": true
+    },
+    {
+      "text": "Aprender Bases de datos",
+      "completed": true,
+      "id": "dl4NgzOzYno"
+    },
+    {
+      "text": "Diseño css",
+      "completed": true,
+      "id": "GQCBR18alMk"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

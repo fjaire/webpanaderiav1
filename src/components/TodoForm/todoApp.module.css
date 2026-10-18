@@ -1,0 +1,26 @@
+.formContainer {
+    text-align: center;
+
+    h2 {
+        margin-bottom: 30px;
+        font-size: 1.8em;
+    }
+
+    input {
+        font-size: 1.2em;
+        padding: 10px;
+    }
+
+    form {
+        display: flex;
+        gap: 20px;
+        width: max-content;
+        margin: 0 auto;
+
+        button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    }
+}
