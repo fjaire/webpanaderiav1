@@ -75,5 +75,105 @@ npm install axios
 usos:
 Permite hacer peticiones http a una API o un servidor.
 
+2) Adaptamos React Router al proyecto, lanzar el comando, en carpeta frontend/vite-project:
+npm install react-router-dom
+
+¿Por qué recomiendo esta organización?
+- main.jsx configura el enrutador una sola vez para toda la aplicación.
+- App.jsx concentra las rutas y facilita agregar páginas nuevas.
+- CrudUsuarios.jsx conserva su responsabilidad de administrar usuarios.
+- lazy() permite cargar el componente cuando se necesita y Suspense muestra el indicador de carga.
+
+1. Principales ventajas de React Router
+
+1. Navegación sin recargar la página
+
+Permite cambiar entre vistas sin realizar una recarga completa del sitio. Esto hace que la navegación se sienta más fluida.
 
 
+
+
+2. URLs independientes para cada sección
+
+Puedes tener direcciones específicas para cada vista, como /usuarios, /reportes y /estadisticas. Facilita compartir enlaces y acceder directamente a una sección.
+
+
+
+
+3. Organización del código
+
+Cada página puede estar en su propio componente. Así evitas que App.jsx concentre toda la lógica de la aplicación.
+
+
+
+
+4. Carga diferida con lazy()
+
+Puedes cargar páginas solo cuando se necesitan. Esto ayuda a reducir el JavaScript inicial descargado en aplicaciones con muchas vistas.
+
+
+
+
+5. Rutas protegidas
+
+Puedes controlar qué vistas se muestran según el estado de autenticación o los permisos del usuario. Recuerda que la autorización real también debe validarse en el servidor.
+
+
+
+
+6. Navegación programática
+
+Con useNavigate() puedes redirigir al usuario después de iniciar sesión, guardar un registro o completar una operación.
+
+
+
+2. Ejemplo aplicado a tu CRUD de usuarios
+Imagina que tu aplicación crece y necesitas varias secciones:
+Inicio
+
+Ruta: /
+
+
+
+Gestión de usuarios
+
+Ruta: /usuarios
+
+
+
+Estadísticas
+
+Ruta: /estadisticas
+
+
+
+Reportes
+
+Ruta: /reportes
+
+Cada ruta puede tener su propio componente, lo que facilita desarrollar, mantener y probar cada sección de forma independiente.
+
+Por ejemplo, podrías usar Link para navegar sin recargar la página:
+import { Link } from "react-router-dom";
+
+<Link to="/usuarios">Gestionar usuarios</Link>
+<Link to="/estadisticas">Ver estadísticas</Link>
+
+
+Para que estos enlaces funcionen, debes declarar las rutas correspondientes en App.jsx.
+3. ¿React Router mejora el rendimiento?
+Puede ayudar, especialmente combinado con lazy() y Suspense, pero son conceptos diferentes:
+Característica	Beneficio
+React Router	Gestiona la navegación y las URLs.
+lazy()	Permite cargar componentes bajo demanda.
+Suspense	Muestra una interfaz provisional mientras se carga un componente compatible.
+Link	Facilita navegar sin recargar toda la página.
+React Router por sí solo no garantiza que la aplicación sea más rápida. El beneficio de rendimiento depende de cómo estructures y cargues tus componentes.
+4. ¿Cuándo conviene utilizarlo?
+- Aplicación de una sola vista: puede que no lo necesites todavía.
+- CRUD con varias secciones: resulta útil para separar usuarios, reportes, estadísticas y otras vistas.
+- Aplicación con autenticación: facilita organizar las rutas públicas y las que requieren sesión.
+- Aplicación grande: permite estructurar la navegación y aplicar carga diferida por página.
+
+3) El siguiente paso es instalar bootrstrap en carpeta vite, para la construccion del paginador:
+npm install bootstrap
