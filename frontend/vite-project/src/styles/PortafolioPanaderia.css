@@ -1,0 +1,81 @@
+.navbar {
+  background-color: var(--cafe-oscuro);
+}
+
+.navbar-brand {
+  color: white;
+  font-weight: 700;
+}
+
+.hero {
+  min-height: 450px;
+  display: flex;
+  align-items: center;
+  color: white;
+  background:
+    linear-gradient(90deg, rgba(35, 19, 10, 0.9), rgba(35, 19, 10, 0.2)),
+    url("https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1800&q=85")
+    center / cover;
+}
+
+.btn-cafe {
+  background-color: var(--cafe);
+  color: white;
+  border: none;
+}
+
+.btn-cafe:hover {
+  background-color: var(--cafe-oscuro);
+  color: white;
+}
+
+.btn-dorado {
+  background-color: var(--dorado);
+  color: var(--cafe-oscuro);
+  border: none;
+  font-weight: 700;
+}
+
+.product-card {
+  height: 100%;
+  overflow: hidden;
+  border: none;
+  border-radius: 14px;
+  box-shadow: 0 5px 20px rgba(78, 43, 27, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.price {
+  color: var(--cafe);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.benefit {
+  background-color: #f0e5d5;
+}
+
+footer {
+  background-color: var(--cafe-oscuro);
+  color: white;
+}
+
+@media (max-width: 576px) {
+  .hero {
+    min-height: 380px;
+  }
+
+  .product-img {
+    height: 200px;
+  }
+}

@@ -16,7 +16,7 @@ const Layout = ({ children }) => {
     const maxWidth = Math.max(MIN_MENU_WIDTH, bounds.width - 180);
     const nextWidth = Math.min(
       Math.max(clientX - bounds.left, MIN_MENU_WIDTH),
-      maxWidth
+      maxWidth,
     );
     setMenuWidth(nextWidth);
   };
@@ -31,7 +31,7 @@ const Layout = ({ children }) => {
     const maxWidth = Math.max(MIN_MENU_WIDTH, bounds.width - 180);
     const change = event.key === "ArrowRight" ? 16 : -16;
     setMenuWidth((width) =>
-      Math.min(Math.max(width + change, MIN_MENU_WIDTH), maxWidth)
+      Math.min(Math.max(width + change, MIN_MENU_WIDTH), maxWidth),
     );
   };
 
@@ -39,8 +39,10 @@ const Layout = ({ children }) => {
     <div
       ref={layoutRef}
       style={{
+        width: "100vw",
         minHeight: "100vh",
         display: "flex",
+        boxSizing: "border-box",
       }}
     >
       <aside
@@ -61,7 +63,7 @@ const Layout = ({ children }) => {
         aria-valuemin={MIN_MENU_WIDTH}
         aria-valuemax={Math.max(
           MIN_MENU_WIDTH,
-          (layoutRef.current?.getBoundingClientRect().width ?? 400) - 180
+          (layoutRef.current?.getBoundingClientRect().width ?? 400) - 180,
         )}
         aria-valuenow={Math.round(menuWidth)}
         tabIndex={0}
@@ -115,4 +117,3 @@ const Layout = ({ children }) => {
 };
 
 export default Layout;
-

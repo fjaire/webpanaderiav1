@@ -4,6 +4,11 @@ import axios from "axios";
 
 const BASE_URL = "http://192.168.20.41:3000/usuarios";
 
+const authHeaders = () => {
+  const token = localStorage.getItem("accessToken");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
 const CrudUsuarios = () => {
   const [items, setItems] = useState([]);
   const [newNombre, setNewNombre] = useState("");
@@ -35,7 +40,7 @@ const CrudUsuarios = () => {
 
   useEffect(() => {
     axios
-      .get(BASE_URL)
+      .get(BASE_URL, { headers: authHeaders() })
       .then((response) => {
         setItems(response.data);
       })
@@ -51,7 +56,7 @@ const CrudUsuarios = () => {
           nombre: newNombre,
           email: newEmail,
           password: newPassword,
-        })
+        }, { headers: authHeaders() })
         .then((response) => {
           setItems((prevItems) => [
             ...prevItems,
@@ -72,7 +77,7 @@ const CrudUsuarios = () => {
 
   const handleDelete = (id) => {
     axios
-      .delete(`${BASE_URL}/delete/${id}`)
+      .delete(`${BASE_URL}/delete/${id}`, { headers: authHeaders() })
       .then(() => {
         setItems((prevItems) =>
           prevItems.filter((item) => item.id !== id)
@@ -98,7 +103,7 @@ const CrudUsuarios = () => {
         .put(`${BASE_URL}/update/${id}`, {
           nombre: newNombre,
           email: newEmail,
-        })
+        }, { headers: authHeaders() })
         .then(() => {
           setItems((prevItems) =>
             prevItems.map((item) =>
@@ -149,7 +154,8 @@ const CrudUsuarios = () => {
       <div
         style={{
           width: "100%",
-          maxWidth: "900px",
+          maxWidth: "1400px",
+          margin: "0 auto",
           textAlign: "center",
           padding: "25px",
           boxSizing: "border-box",

@@ -177,3 +177,5 @@ React Router por sí solo no garantiza que la aplicación sea más rápida. El b
 
 3) El siguiente paso es instalar bootrstrap en carpeta vite, para la construccion del paginador:
 npm install bootstrap
+4) Instalacion de la libreria de iconos para el portafolio de productos de la panaderia:
+npm install bootstrap bootstrap-icons

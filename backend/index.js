@@ -63,8 +63,44 @@ const createAccessToken = (user) => {
     return `${unsignedToken}.${signature}`
 }
 
+// Verifica que la petición incluya un token válido en el header Authorization.
+const requireAuth = (req, res, next) => {
+    const authHeader = req.headers.authorization || ''
+    const [scheme, token] = authHeader.split(' ')
+
+    if (scheme !== 'Bearer' || !token) {
+        return res.status(401).json({ error: 'No autenticado. Debe iniciar sesión.' })
+    }
+
+    const parts = token.split('.')
+    if (parts.length !== 3) {
+        return res.status(401).json({ error: 'Token inválido.' })
+    }
+
+    const unsignedToken = `${parts[0]}.${parts[1]}`
+    const expectedSignature = createHmac('sha256', AUTH_SECRET).update(unsignedToken).digest('base64url')
+
+    const tokenBuffer = Buffer.from(parts[2])
+    const expectedBuffer = Buffer.from(expectedSignature)
+    if (tokenBuffer.length !== expectedBuffer.length || !timingSafeEqual(tokenBuffer, expectedBuffer)) {
+        return res.status(401).json({ error: 'Token inválido.' })
+    }
+
+    try {
+        const payload = JSON.parse(Buffer.from(parts[1], 'base64url').toString())
+        if (typeof payload.exp !== 'number' || payload.exp <= Math.floor(Date.now() / 1000)) {
+            return res.status(401).json({ error: 'Sesión expirada. Inicie sesión nuevamente.' })
+        }
+
+        req.usuarioAutenticado = payload
+        next()
+    } catch {
+        return res.status(401).json({ error: 'Token inválido.' })
+    }
+}
+
 // Lista de end-points
-app.get('/usuarios', (req,res)=>{
+app.get('/usuarios', requireAuth, (req,res)=>{
     db.query("SELECT * FROM usuarios", (err, results)=>{
         if (err){
             console.error(err)
@@ -74,7 +110,7 @@ app.get('/usuarios', (req,res)=>{
         } else{
             res.json(results)
         }
-    })       
+    })
 })
 
 app.post('/usuarios/add', async (req, res) => {
@@ -145,17 +181,17 @@ app.post('/auth/login', (req, res) => {
     })
 })
 
-app.put('/usuarios/update/:id', (req, res)=>{
+app.put('/usuarios/update/:id', requireAuth, (req, res)=>{
     const {id} = req.params
     const {nombre, email}=req.body
-    
+
     const query = 'UPDATE usuarios SET nombre =?, email=? WHERE id=?'
-    
+
     db.query(query, [nombre, email, id], (err, results)=>{
         if(err){
            res.status(500).send({
                 error: 'Error al actualizar el usuario'
-           }) 
+           })
         } else{
             res.json({
                 id,
@@ -166,7 +202,7 @@ app.put('/usuarios/update/:id', (req, res)=>{
     })
 })
 
-app.delete('/usuarios/delete/:id', (req, res)=>{
+app.delete('/usuarios/delete/:id', requireAuth, (req, res)=>{
     const {id} = req.params
     
     const query = "DELETE FROM usuarios WHERE id = ?"

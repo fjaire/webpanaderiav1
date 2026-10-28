@@ -17,7 +17,7 @@ const RegistroUsuarios = () => {
     axios
       .get(BASE_URL)
       .then(({ data }) => setUsuarios(data))
-      .catch(() => setError("No se pudo cargar la tabla de usuarios."))
+      .catch(() => setUsuarios([]))
       .finally(() => setCargando(false));
   }, []);
 
@@ -29,7 +29,8 @@ const RegistroUsuarios = () => {
       password,
     };
 
-    if (!nuevoUsuario.nombre || !nuevoUsuario.email || password.length < 8) return;
+    if (!nuevoUsuario.nombre || !nuevoUsuario.email || password.length < 8)
+      return;
 
     setGuardando(true);
     setError("");
@@ -48,8 +49,8 @@ const RegistroUsuarios = () => {
   };
 
   return (
-    <main className="container py-4 py-lg-5">
-      <div className="row justify-content-center">
+    <main className="container-fluid py-4 py-lg-5">
+      <div className="row">
         <div className="col-12">
           <header className="mb-4">
             <h1 className="h2 mb-1">Registro de usuarios</h1>
@@ -58,7 +59,10 @@ const RegistroUsuarios = () => {
             </p>
           </header>
 
-          <section className="card shadow-sm mb-4" aria-labelledby="titulo-formulario">
+          <section
+            className="card shadow-sm mb-4"
+            aria-labelledby="titulo-formulario"
+          >
             <div className="card-body p-4">
               <h2 id="titulo-formulario" className="h5 card-title mb-3">
                 Datos del usuario
@@ -111,10 +115,20 @@ const RegistroUsuarios = () => {
                       <button
                         className="btn btn-outline-secondary"
                         type="button"
-                        onClick={() => setMostrarPassword((visible) => !visible)}
-                        aria-label={mostrarPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                        onClick={() =>
+                          setMostrarPassword((visible) => !visible)
+                        }
+                        aria-label={
+                          mostrarPassword
+                            ? "Ocultar contraseña"
+                            : "Mostrar contraseña"
+                        }
                         aria-pressed={mostrarPassword}
-                        title={mostrarPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                        title={
+                          mostrarPassword
+                            ? "Ocultar contraseña"
+                            : "Mostrar contraseña"
+                        }
                       >
                         {mostrarPassword ? (
                           <svg
@@ -156,10 +170,17 @@ const RegistroUsuarios = () => {
                     <div className="form-text">Mínimo 8 caracteres.</div>
                   </div>
                   <div className="col-12 col-md-3 d-grid">
-                    <label className="form-label d-none d-md-block invisible" aria-hidden="true">
+                    <label
+                      className="form-label d-none d-md-block invisible"
+                      aria-hidden="true"
+                    >
                       Registrar
                     </label>
-                    <button className="btn btn-success" type="submit" disabled={guardando}>
+                    <button
+                      className="btn btn-success"
+                      type="submit"
+                      disabled={guardando}
+                    >
                       {guardando ? "Registrando…" : "Registrar"}
                     </button>
                   </div>
@@ -168,8 +189,11 @@ const RegistroUsuarios = () => {
             </div>
           </section>
 
-          {error && <div className="alert alert-danger" role="alert">{error}</div>}
-
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
         </div>
       </div>
     </main>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const estiloOpcionSesion = {
   background: "none",
@@ -7,10 +7,24 @@ const estiloOpcionSesion = {
   font: "inherit",
   color: "#ffffff",
   cursor: "pointer",
-  textDecoration: "underline",
+  textDecoration: "none",
 };
 
 const Menu = () => {
+  const navigate = useNavigate();
+  const estaLogueado = Boolean(localStorage.getItem("accessToken"));
+
+  const cerrarSesion = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("usuario");
+    navigate("/", { replace: true });
+  };
+
+  const estiloEnlace = {
+    color: "#ffffff",
+    textDecoration: "none",
+  };
+
   return (
     <nav
       style={{
@@ -21,8 +35,23 @@ const Menu = () => {
         padding: "10px 16px",
       }}
     >
-      <Link to="/" style={{ color: "#ffffff", textDecoration: "none" }}>Inicio</Link>
-      <Link to="/usuarios" style={{ color: "#ffffff", textDecoration: "none" }}>Gestión de usuarios</Link>
+      <Link to="/" style={estiloEnlace}>
+        Inicio
+      </Link>
+
+      <Link to="/productos" style={estiloEnlace}>
+        Productos
+      </Link>
+
+      {estaLogueado ? (
+        <Link to="/usuarios" style={estiloEnlace}>
+          Gestión de usuarios
+        </Link>
+      ) : (
+        <Link to="/login" style={estiloEnlace}>
+          Gestión de usuarios (requiere iniciar sesión)
+        </Link>
+      )}
 
       <details>
         <summary
@@ -44,10 +73,16 @@ const Menu = () => {
             paddingLeft: "16px",
           }}
         >
-          <Link to="/login" style={{ color: "#ffffff", textDecoration: "none" }}>Iniciar sesión</Link>
-          <Link to="/registro" style={{ color: "#ffffff", textDecoration: "none" }}>Registrarse</Link>
+          <Link to="/login" style={estiloEnlace}>
+            Iniciar sesión
+          </Link>
+
+          <Link to="/registro" style={estiloEnlace}>
+            Registrarse
+          </Link>
+
           <button
-            onClick={() => console.log("Logout")}
+            onClick={cerrarSesion}
             style={{ ...estiloOpcionSesion, textAlign: "left" }}
           >
             Cerrar sesión
@@ -59,4 +94,3 @@ const Menu = () => {
 };
 
 export default Menu;
-
