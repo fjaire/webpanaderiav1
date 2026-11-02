@@ -1,6 +1,7 @@
-
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { pdf } from "@react-pdf/renderer";
+import UsuariosPDF from "./UsuariosPDF";
 
 const BASE_URL = "http://192.168.20.41:3000/usuarios";
 
@@ -19,17 +20,9 @@ const CrudUsuarios = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(items.length / itemsPerPage)
-  );
-
+  const totalPages = Math.max(1, Math.ceil(items.length / itemsPerPage));
   const startIndex = (currentPage - 1) * itemsPerPage;
-
-  const itemsPaginados = items.slice(
-    startIndex,
-    startIndex + itemsPerPage
-  );
+  const itemsPaginados = items.slice(startIndex, startIndex + itemsPerPage);
 
   // Ajustar la página si se eliminan usuarios
   useEffect(() => {
@@ -52,19 +45,21 @@ const CrudUsuarios = () => {
   const handleCreate = () => {
     if (newNombre.trim() && newEmail.trim() && newPassword.length >= 8) {
       axios
-        .post(`${BASE_URL}/add`, {
-          nombre: newNombre,
-          email: newEmail,
-          password: newPassword,
-        }, { headers: authHeaders() })
+        .post(
+          `${BASE_URL}/add`,
+          {
+            nombre: newNombre,
+            email: newEmail,
+            password: newPassword,
+          },
+          { headers: authHeaders() },
+        )
         .then((response) => {
           setItems((prevItems) => [
             ...prevItems,
             { ...response.data, password_configurada: true },
           ]);
-          setCurrentPage(
-            Math.ceil((items.length + 1) / itemsPerPage)
-          );
+          setCurrentPage(Math.ceil((items.length + 1) / itemsPerPage));
           setNewNombre("");
           setNewEmail("");
           setNewPassword("");
@@ -79,9 +74,7 @@ const CrudUsuarios = () => {
     axios
       .delete(`${BASE_URL}/delete/${id}`, { headers: authHeaders() })
       .then(() => {
-        setItems((prevItems) =>
-          prevItems.filter((item) => item.id !== id)
-        );
+        setItems((prevItems) => prevItems.filter((item) => item.id !== id));
       })
       .catch((error) => {
         console.error("Error al eliminar el item:", error);
@@ -100,22 +93,63 @@ const CrudUsuarios = () => {
       (newNombre !== nombre || newEmail !== email)
     ) {
       axios
-        .put(`${BASE_URL}/update/${id}`, {
-          nombre: newNombre,
-          email: newEmail,
-        }, { headers: authHeaders() })
+        .put(
+          `${BASE_URL}/update/${id}`,
+          {
+            nombre: newNombre,
+            email: newEmail,
+          },
+          { headers: authHeaders() },
+        )
         .then(() => {
           setItems((prevItems) =>
             prevItems.map((item) =>
               item.id === id
                 ? { ...item, nombre: newNombre, email: newEmail }
-                : item
-            )
+                : item,
+            ),
           );
         })
         .catch((error) => {
           console.error("Error al actualizar el item:", error);
         });
+    }
+  };
+
+  // Genera el PDF y lo muestra en una nueva pestaña del navegador.
+  const handleVerPDF = async (e) => {
+    e.preventDefault();
+
+    // Abrir la pestaña inmediatamente para evitar que el navegador la bloquee.
+    const ventana = window.open("", "_blank");
+
+    if (!ventana) {
+      alert("Permite las ventanas emergentes para visualizar el PDF.");
+      return;
+    }
+
+    ventana.document.write(`
+      <!doctype html>
+      <html>
+        <head><title>Generando reporte</title></head>
+        <body style="font-family: Arial, sans-serif; padding: 24px;">
+          <h3>Generando reporte PDF...</h3>
+          <p>Espera un momento.</p>
+        </body>
+      </html>
+    `);
+    ventana.document.close();
+
+    try {
+      const blob = await pdf(<UsuariosPDF usuarios={items} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      ventana.location.href = url;
+    } catch (error) {
+      console.error("Error al generar el PDF:", error);
+      ventana.close();
+      alert(
+        "No fue posible generar el reporte PDF. Revisa la consola para más detalles.",
+      );
     }
   };
 
@@ -161,7 +195,9 @@ const CrudUsuarios = () => {
           boxSizing: "border-box",
         }}
       >
-        <h1 style={{ color: "#ffffff", marginBottom:"25px" }}>Listado de usuarios</h1>
+        <h1 style={{ color: "#ffffff", marginBottom: "25px" }}>
+          Listado de usuarios
+        </h1>
 
         <div
           style={{
@@ -212,12 +248,28 @@ const CrudUsuarios = () => {
               color: "#fff",
             }}
           >
-            <img
-              src="/imagenes/crear.png"
-              alt=""
-              style={estiloImagen}
-            />
+            <img src="/imagenes/crear.png" alt="" style={estiloImagen} />
             Crear
+          </a>
+
+          {/* Este enlace abre el PDF en una nueva pestaña; no lo descarga. */}
+          <a
+            href="#"
+            onClick={handleVerPDF}
+            style={{
+              ...estiloEnlace,
+              backgroundColor: "#dc3545",
+              color: "#fff",
+              height: "36px",
+              boxSizing: "border-box",
+            }}
+          >
+            <i
+              className="bi bi-file-earmark-pdf-fill"
+              style={{ fontSize: "20px" }}
+              aria-hidden="true"
+            ></i>
+            Ver PDF
           </a>
         </div>
 
@@ -252,15 +304,12 @@ const CrudUsuarios = () => {
               ? "Mostrando 0 usuarios"
               : `Mostrando ${startIndex + 1}–${Math.min(
                   startIndex + itemsPerPage,
-                  items.length
+                  items.length,
                 )} de ${items.length} usuarios`}
           </small>
         </div>
 
-        <ul
-          className="list-unstyled"
-          style={{ padding: 0, margin: 0 }}
-        >
+        <ul className="list-unstyled" style={{ padding: 0, margin: 0 }}>
           {itemsPaginados.map((item) => (
             <li
               key={item.id}
@@ -281,7 +330,10 @@ const CrudUsuarios = () => {
               <span className="fw-semibold">{item.nombre}</span>
               <span className="text-secondary">{item.email}</span>
               <span className="text-secondary">
-                password_hash: {item.password_configurada || item.password_hash ? "Configurada" : "No configurada"}
+                password_hash:{" "}
+                {item.password_configurada || item.password_hash
+                  ? "Configurada"
+                  : "No configurada"}
               </span>
 
               <div
@@ -310,7 +362,6 @@ const CrudUsuarios = () => {
                     alt="Actualizar"
                     style={estiloImagen}
                   />
-                  
                 </a>
 
                 <a
@@ -330,7 +381,6 @@ const CrudUsuarios = () => {
                     alt="Eliminar"
                     style={estiloImagen}
                   />
-                  
                 </a>
               </div>
             </li>
@@ -345,15 +395,10 @@ const CrudUsuarios = () => {
 
         {/* Paginador Bootstrap */}
         {items.length > 0 && (
-          <nav
-            aria-label="Paginación de usuarios"
-            className="mt-4"
-          >
+          <nav aria-label="Paginación de usuarios" className="mt-4">
             <ul className="pagination justify-content-center flex-wrap">
               <li
-                className={`page-item ${
-                  currentPage === 1 ? "disabled" : ""
-                }`}
+                className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
               >
                 <button
                   type="button"
@@ -366,44 +411,37 @@ const CrudUsuarios = () => {
               </li>
 
               <li
-                className={`page-item ${
-                  currentPage === 1 ? "disabled" : ""
-                }`}
+                className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
               >
                 <button
                   type="button"
                   className="page-link"
                   disabled={currentPage === 1}
-                  onClick={() =>
-                    setCurrentPage((page) => page - 1)
-                  }
+                  onClick={() => setCurrentPage((page) => page - 1)}
                 >
                   Anterior
                 </button>
               </li>
 
-              {Array.from(
-                { length: totalPages },
-                (_, index) => index + 1
-              ).map((page) => (
-                <li
-                  key={page}
-                  className={`page-item ${
-                    currentPage === page ? "active" : ""
-                  }`}
-                >
-                  <button
-                    type="button"
-                    className="page-link"
-                    aria-current={
-                      currentPage === page ? "page" : undefined
-                    }
-                    onClick={() => setCurrentPage(page)}
+              {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+                (page) => (
+                  <li
+                    key={page}
+                    className={`page-item ${
+                      currentPage === page ? "active" : ""
+                    }`}
                   >
-                    {page}
-                  </button>
-                </li>
-              ))}
+                    <button
+                      type="button"
+                      className="page-link"
+                      aria-current={currentPage === page ? "page" : undefined}
+                      onClick={() => setCurrentPage(page)}
+                    >
+                      {page}
+                    </button>
+                  </li>
+                ),
+              )}
 
               <li
                 className={`page-item ${
@@ -414,9 +452,7 @@ const CrudUsuarios = () => {
                   type="button"
                   className="page-link"
                   disabled={currentPage === totalPages}
-                  onClick={() =>
-                    setCurrentPage((page) => page + 1)
-                  }
+                  onClick={() => setCurrentPage((page) => page + 1)}
                 >
                   Siguiente
                 </button>

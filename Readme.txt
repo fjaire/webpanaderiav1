@@ -179,3 +179,10 @@ React Router por sí solo no garantiza que la aplicación sea más rápida. El b
 npm install bootstrap
 4) Instalacion de la libreria de iconos para el portafolio de productos de la panaderia:
 npm install bootstrap bootstrap-icons
+
+Para darle estilo dashboard adminLTE, puede visitar estos enlaces:
+https://themefisher.com/free-responsive-html5-bootstrap-admin-templates
+https://quixlab-bootstrap-site.vercel.app/
+
+5) Para instalar la libreria de reporteado, ruta carpeta frontend/vite-project/:
+npm install @react-pdf/renderer

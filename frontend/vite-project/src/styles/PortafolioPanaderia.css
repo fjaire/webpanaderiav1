@@ -79,3 +79,103 @@ footer {
     height: 200px;
   }
 }
+/* ===== Tarjetas del portafolio de productos ===== */
+.tarjeta-producto {
+  border: none;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-producto:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(78, 43, 27, 0.18) !important;
+}
+
+.img-producto {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background-color: #f3e5d8;
+}
+
+.boton-ver-detalle {
+  background-color: #198754;
+  border-color: #198754;
+  color: white;
+  font-weight: 600;
+}
+
+.boton-ver-detalle:hover,
+.boton-ver-detalle:focus {
+  background-color: #146c43;
+  border-color: #146c43;
+  color: white;
+}
+
+/* ===== Paginador del portafolio ===== */
+.paginador-productos .page-link {
+  color: var(--cafe);
+  border-color: #e0d3c4;
+}
+
+.paginador-productos .page-item.active .page-link {
+  background-color: var(--cafe);
+  border-color: var(--cafe);
+  color: white;
+}
+
+.paginador-productos .page-link:hover {
+  background-color: var(--cafe-oscuro);
+  border-color: var(--cafe-oscuro);
+  color: white;
+}
+
+/* ===== Barra superior del paginador ===== */
+.selector-tamanio {
+  width: auto;
+  min-width: 75px;
+  border-color: #e0d3c4;
+}
+
+.paginador-barra {
+  border-top: 1px solid #efe6db;
+  padding-top: 1.25rem;
+}
+
+/* ===== Botón agregar al carrito ===== */
+.boton-agregar-carrito {
+  background-color: #198754;
+  border-color: #198754;
+  color: white;
+  font-weight: 600;
+}
+
+.boton-agregar-carrito:hover,
+.boton-agregar-carrito:focus {
+  background-color: #146c43;
+  border-color: #146c43;
+  color: white;
+}
+
+/* ===== Página del carrito de compras ===== */
+.img-carrito {
+  width: 70px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #f3e5d8;
+}
+
+.enlace-producto-carrito {
+  color: var(--cafe);
+}
+
+.enlace-producto-carrito:hover {
+  color: var(--cafe-oscuro);
+}
+
+.resumen-carrito .total-carrito {
+  background-color: #f0e5d5;
+  color: var(--cafe-oscuro);
+}

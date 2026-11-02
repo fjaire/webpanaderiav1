@@ -17,6 +17,10 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+// Sirve las imágenes de los productos guardadas en C:\frank\Imagenes\panaderia
+// bajo la URL http://localhost:3000/imagenes/panaderia/<archivo>
+app.use('/imagenes/panaderia', express.static('C:\\frank\\Imagenes\\panaderia'))
+
 const db = mysql.createConnection({
     host: 'localhost',
     user:'root',
@@ -100,6 +104,20 @@ const requireAuth = (req, res, next) => {
 }
 
 // Lista de end-points
+// Devuelve el catálogo de productos de la panadería.
+app.get('/productos', (req,res)=>{
+    const query = 'SELECT id, nombre, descripcion, precio, descuento, iva, ruta_imagen FROM productos ORDER BY nombre'
+
+    db.query(query, (err, results)=>{
+        if (err){
+            console.error(err)
+            return res.status(500).json({ error: 'Error al obtener los productos' })
+        }
+
+        res.json(results)
+    })
+})
+
 app.get('/usuarios', requireAuth, (req,res)=>{
     db.query("SELECT * FROM usuarios", (err, results)=>{
         if (err){

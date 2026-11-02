@@ -9,6 +9,8 @@ const CrudUsuarios = lazy(() => import("./pages/CrudUsuarios"));
 const RegistroUsuarios = lazy(() => import("./pages/RegistroUsuarios"));
 const InicioSesion = lazy(() => import("./pages/InicioSesion"));
 const PortafolioPanaderia = lazy(() => import("./pages/PortafolioPanaderia"));
+const DetalleProducto = lazy(() => import("./pages/DetalleProducto"));
+const CarritoCompras = lazy(() => import("./pages/CarritoCompras"));
 
 const App = () => (
   <Suspense fallback={<p className="p-3">Cargando página...</p>}>
@@ -54,6 +56,15 @@ const App = () => (
 
       {/* Página con diseño independiente */}
       <Route path="/productos" element={<PortafolioPanaderia />} />
+      <Route path="/productos/:id" element={<DetalleProducto />} />
+      <Route
+        path="/carrito"
+        element={
+          <RutaProtegida>
+            <CarritoCompras />
+          </RutaProtegida>
+        }
+      />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
