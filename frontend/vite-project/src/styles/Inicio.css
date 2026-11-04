@@ -1,0 +1,301 @@
+/* ===== Página de inicio — Panadería Alvarado ===== */
+.inicio {
+  color: #3b2a20;
+  background-color: #fdf8f1;
+  font-family: inherit;
+}
+
+/* ===== Hero ===== */
+.inicio-hero {
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  background:
+    linear-gradient(90deg, rgba(43, 24, 12, 0.88), rgba(43, 24, 12, 0.35)),
+    url("https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1800&q=85")
+      center / cover;
+  padding: 60px 40px;
+  box-sizing: border-box;
+}
+
+.inicio-hero__contenido {
+  max-width: 640px;
+  color: #ffffff;
+}
+
+.inicio-hero__etiqueta {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #f4c65a;
+  margin: 0 0 12px;
+}
+
+.inicio-hero__titulo {
+  font-size: clamp(1.8rem, 4.5vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 20px;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+}
+
+.inicio-hero__texto {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0 0 28px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.inicio-hero__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* ===== Botones ===== */
+.inicio-boton {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.inicio-boton:hover {
+  transform: translateY(-2px);
+}
+
+.inicio-boton--dorado {
+  background-color: #f4c65a;
+  color: #3b2a20;
+}
+
+.inicio-boton--dorado:hover {
+  background-color: #e8b83f;
+  color: #3b2a20;
+  box-shadow: 0 8px 20px rgba(244, 198, 90, 0.35);
+}
+
+.inicio-boton--borde {
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  color: #ffffff;
+}
+
+.inicio-boton--borde:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+/* ===== Secciones ===== */
+.inicio-seccion {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 60px 32px;
+  box-sizing: border-box;
+}
+
+.inicio-seccion__intro h2 {
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #4a3325;
+  margin: 0 0 16px;
+  letter-spacing: -0.3px;
+}
+
+.inicio-seccion__intro p {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  margin: 0;
+  color: #5d4536;
+}
+
+.inicio-seccion__titulo {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: #4a3325;
+  margin: 0 0 8px;
+  letter-spacing: -0.3px;
+  text-align: center;
+}
+
+.inicio-seccion__bajada {
+  text-align: center;
+  color: #8a6e5c;
+  font-size: 1rem;
+  margin: 0 0 40px;
+}
+
+/* ===== Grid de tarjetas de productos ===== */
+.inicio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
+}
+
+.inicio-tarjeta {
+  background-color: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(78, 43, 27, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.inicio-tarjeta:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(78, 43, 27, 0.16);
+}
+
+.inicio-tarjeta__imagen {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  display: block;
+}
+
+.inicio-tarjeta__cuerpo {
+  padding: 20px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.inicio-tarjeta__titulo {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #4a3325;
+  margin: 0 0 10px;
+}
+
+.inicio-tarjeta__texto {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #6b564a;
+  margin: 0 0 16px;
+  flex: 1;
+}
+
+.inicio-tarjeta__enlace {
+  color: #b07d3a;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.inicio-tarjeta__enlace:hover {
+  color: #7a5321;
+  text-decoration: underline;
+}
+
+/* ===== Ventajas ===== */
+.inicio-ventajas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 36px;
+}
+
+.inicio-ventaja {
+  background-color: #f7ecdd;
+  border-radius: 16px;
+  padding: 32px 26px;
+  text-align: center;
+  transition: transform 0.25s ease;
+}
+
+.inicio-ventaja:hover {
+  transform: translateY(-4px);
+}
+
+.inicio-ventaja__icono {
+  font-size: 2.4rem;
+  display: block;
+  margin: 0 0 14px;
+}
+
+.inicio-ventaja__titulo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #4a3325;
+  margin: 0 0 10px;
+}
+
+.inicio-ventaja__texto {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: #6b564a;
+  margin: 0;
+}
+
+/* ===== Invitación final ===== */
+.inicio-invita {
+  background:
+    linear-gradient(90deg, rgba(43, 24, 12, 0.92), rgba(43, 24, 12, 0.55)),
+    url("https://images.unsplash.com/photo-1517686469429-8bdb88b9f487?auto=format&fit=crop&w=1600&q=80")
+      center / cover;
+  border-radius: 20px;
+  padding: 56px 40px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.inicio-invita__titulo {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 16px;
+  color: #ffffff;
+}
+
+.inicio-invita__texto {
+  max-width: 640px;
+  margin: 0 auto 26px;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ===== Dato curioso ===== */
+.inicio-dato {
+  max-width: 1140px;
+  margin: 0 auto 60px;
+  padding: 0 32px;
+  box-sizing: border-box;
+}
+
+.inicio-dato p {
+  background-color: #fff3df;
+  border-left: 5px solid #f4c65a;
+  border-radius: 10px;
+  padding: 20px 26px;
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: #6b564a;
+}
+
+.inicio-dato strong {
+  color: #4a3325;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .inicio-hero {
+    padding: 40px 24px;
+    min-height: 380px;
+  }
+
+  .inicio-seccion {
+    padding: 44px 20px;
+  }
+
+  .inicio-invita {
+    padding: 40px 24px;
+  }
+}

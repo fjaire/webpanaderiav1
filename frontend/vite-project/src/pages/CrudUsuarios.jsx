@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { pdf } from "@react-pdf/renderer";
+import { useNavigate } from "react-router-dom";
 import UsuariosPDF from "./UsuariosPDF";
 
-const BASE_URL = "http://192.168.20.41:3000/usuarios";
+const BASE_URL = `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/usuarios`;
 
 const authHeaders = () => {
   const token = localStorage.getItem("accessToken");
@@ -11,6 +12,7 @@ const authHeaders = () => {
 };
 
 const CrudUsuarios = () => {
+  const navigate = useNavigate();
   const [items, setItems] = useState([]);
   const [newNombre, setNewNombre] = useState("");
   const [newEmail, setNewEmail] = useState("");
@@ -38,6 +40,9 @@ const CrudUsuarios = () => {
         setItems(response.data);
       })
       .catch((error) => {
+        if (error.response?.status === 401) {
+          navigate("/login");
+        }
         console.error("Error al obtener los items:", error);
       });
   }, []);

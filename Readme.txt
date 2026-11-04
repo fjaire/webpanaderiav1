@@ -186,3 +186,10 @@ https://quixlab-bootstrap-site.vercel.app/
 
 5) Para instalar la libreria de reporteado, ruta carpeta frontend/vite-project/:
 npm install @react-pdf/renderer
+6) Instalar nodemailer y SMTP, dotenv en backend para recuperación de contraseñas a traves de token de uso en el navegador web. Se crea el fichero .env
+npm install nodemailer dotenv
+7) Probar SMTP en vscode /backend, envia al correo token de recuperacion:
+node test-smtp.js
+8) Para configurar un cliente OAuth 2 de google api, para la aplicacion:
+https://gmailr.r-lib.org/articles/oauth-client.html
+9) El nombre del cliente OAuth = Cliente web 1

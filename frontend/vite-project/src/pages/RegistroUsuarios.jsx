@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { FaGoogle, FaMicrosoft, FaFacebook } from "react-icons/fa";
 
-const BASE_URL = "http://192.168.20.41:3000/usuarios";
+const BASE_URL = `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/usuarios`;
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 const RegistroUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -194,6 +196,30 @@ const RegistroUsuarios = () => {
               {error}
             </div>
           )}
+
+          <div className="d-flex justify-content-center mt-4">
+            <span className="text-secondary small">— o regístrate con —</span>
+          </div>
+          <div className="d-flex justify-content-center gap-2 mt-2 flex-wrap">
+            <a
+              className="btn btn-outline-danger"
+              href={`${API_BASE_URL}/auth/google`}
+            >
+              <FaGoogle className="me-2" /> Google
+            </a>
+            <a
+              className="btn btn-outline-primary"
+              href={`${API_BASE_URL}/auth/oauth/microsoft`}
+            >
+              <FaMicrosoft className="me-2" /> Microsoft
+            </a>
+            <a
+              className="btn btn-outline-secondary"
+              href={`${API_BASE_URL}/auth/oauth/facebook`}
+            >
+              <FaFacebook className="me-2" /> Facebook
+            </a>
+          </div>
         </div>
       </div>
     </main>

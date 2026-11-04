@@ -8,9 +8,12 @@ const Inicio = lazy(() => import("./pages/Inicio"));
 const CrudUsuarios = lazy(() => import("./pages/CrudUsuarios"));
 const RegistroUsuarios = lazy(() => import("./pages/RegistroUsuarios"));
 const InicioSesion = lazy(() => import("./pages/InicioSesion"));
+const RecuperarContrasena = lazy(() => import("./pages/RecuperarContrasena"));
+const CambiarContrasena = lazy(() => import("./pages/CambiarContrasena"));
 const PortafolioPanaderia = lazy(() => import("./pages/PortafolioPanaderia"));
 const DetalleProducto = lazy(() => import("./pages/DetalleProducto"));
 const CarritoCompras = lazy(() => import("./pages/CarritoCompras"));
+const OAuthCallback = lazy(() => import("./pages/OAuthCallback"));
 
 const App = () => (
   <Suspense fallback={<p className="p-3">Cargando página...</p>}>
@@ -50,6 +53,27 @@ const App = () => (
         element={
           <Layout>
             <InicioSesion />
+          </Layout>
+        }
+      />
+
+      <Route
+        path="/recuperar-contrasena"
+        element={
+          <Layout>
+            <RecuperarContrasena />
+          </Layout>
+        }
+      />
+
+      {/* Página que recibe el token tras el OAuth del proveedor */}
+      <Route path="/oauth-callback" element={<OAuthCallback />} />
+
+      <Route
+        path="/cambiar-contrasena"
+        element={
+          <Layout>
+            <CambiarContrasena />
           </Layout>
         }
       />

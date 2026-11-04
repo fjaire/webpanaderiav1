@@ -1,8 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { FaGoogle, FaMicrosoft, FaFacebook } from "react-icons/fa";
 
-const LOGIN_URL = "http://192.168.20.41:3000/auth/login";
+const LOGIN_URL = `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/auth/login`;
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 const InicioSesion = () => {
   const navigate = useNavigate();
@@ -11,6 +13,8 @@ const InicioSesion = () => {
   const [mostrarPassword, setMostrarPassword] = useState(false);
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState("");
+  const [searchParams] = useSearchParams();
+  const oauthError = searchParams.get("oauthError");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -29,7 +33,7 @@ const InicioSesion = () => {
     } catch (err) {
       setError(
         err.response?.data?.error ||
-          "No se pudo iniciar sesión. Revisa la conexión con el servidor."
+          "No se pudo iniciar sesión. Revisa la conexión con el servidor.",
       );
     } finally {
       setCargando(false);
@@ -88,19 +92,49 @@ const InicioSesion = () => {
                       className="btn btn-outline-secondary"
                       type="button"
                       onClick={() => setMostrarPassword((visible) => !visible)}
-                      aria-label={mostrarPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                      aria-label={
+                        mostrarPassword
+                          ? "Ocultar contraseña"
+                          : "Mostrar contraseña"
+                      }
                       aria-pressed={mostrarPassword}
-                      title={mostrarPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                      title={
+                        mostrarPassword
+                          ? "Ocultar contraseña"
+                          : "Mostrar contraseña"
+                      }
                     >
                       {mostrarPassword ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
                           <path d="M3 3l18 18" />
                           <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8" />
                           <path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c5 0 8.3 4.5 9 7-.2.8-.8 1.8-1.7 2.8" />
                           <path d="M6.2 6.2C4 7.6 2.5 9.8 2 12c.7 2.5 4 7 10 7 1.2 0 2.3-.2 3.3-.6" />
                         </svg>
                       ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          aria-hidden="true"
+                        >
                           <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z" />
                           <circle cx="12" cy="12" r="3" />
                         </svg>
@@ -109,10 +143,54 @@ const InicioSesion = () => {
                   </div>
                 </div>
 
-                <button className="btn btn-primary w-100" type="submit" disabled={cargando}>
+                <button
+                  className="btn btn-primary w-100"
+                  type="submit"
+                  disabled={cargando}
+                >
                   {cargando ? "Ingresando…" : "Ingresar"}
                 </button>
               </form>
+
+              <p className="text-center text-secondary mt-3 mb-0">
+                ¿No tienes una cuenta?{" "}
+                <Link to="/registro">Regístrate aquí</Link>
+              </p>
+              <p className="text-center mt-2 mb-0">
+                <Link to="/recuperar-contrasena">
+                  ¿Olvidaste tu contraseña?
+                </Link>
+              </p>
+
+              {oauthError && (
+                <div className="alert alert-warning text-center mt-3 mb-0" role="alert">
+                  {oauthError}
+                </div>
+              )}
+
+              <div className="d-flex justify-content-center mt-4">
+                <span className="text-secondary small">— o ingresa con —</span>
+              </div>
+              <div className="d-flex justify-content-center gap-2 mt-2 flex-wrap">
+                <a
+                  className="btn btn-outline-danger"
+                  href={`${API_BASE_URL}/auth/google`}
+                >
+                  <FaGoogle className="me-2" /> Google
+                </a>
+                <a
+                  className="btn btn-outline-primary"
+                  href={`${API_BASE_URL}/auth/oauth/microsoft`}
+                >
+                  <FaMicrosoft className="me-2" /> Microsoft
+                </a>
+                <a
+                  className="btn btn-outline-secondary"
+                  href={`${API_BASE_URL}/auth/oauth/facebook`}
+                >
+                  <FaFacebook className="me-2" /> Facebook
+                </a>
+              </div>
             </div>
           </section>
         </div>
