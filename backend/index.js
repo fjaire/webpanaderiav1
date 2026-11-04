@@ -335,6 +335,7 @@ const buscarOCrearUsuarioOAuth = async (provider, perfil) => {
             [perfil.email]
         )
         let usuario = usuarios[0]
+        let esNuevo = false
 
         if (!usuario) {
             const nombre = perfil.nombre || perfil.email.split('@')[0]
@@ -343,6 +344,7 @@ const buscarOCrearUsuarioOAuth = async (provider, perfil) => {
                 [nombre, perfil.email]
             )
             usuario = { id: resultado.insertId, nombre, email: perfil.email }
+            esNuevo = true
         }
 
         // El usuario y su vínculo se guardan en la misma transacción. Si
@@ -352,7 +354,7 @@ const buscarOCrearUsuarioOAuth = async (provider, perfil) => {
             [usuario.id, provider, perfil.providerId]
         )
         await transaction('commit')
-        return usuario
+        return { usuario, nuevo: esNuevo }
     } catch (err) {
         await transaction('rollback').catch(() => {})
         throw err
@@ -506,7 +508,10 @@ app.get('/auth/google/callback', async (req, res) => {
 
         let usuario
         try {
-            usuario = await buscarOCrearUsuarioOAuth('google', perfil)
+            const resultado = await buscarOCrearUsuarioOAuth('google', perfil)
+            usuario = resultado.usuario
+            // Marca si la cuenta de Google se acaba de crear (registro).
+            req.usuarioNuevo = resultado.nuevo
         } catch (errUsuario) {
             console.error('[google/callback] paso 5/5 FALLO: no se pudo crear o vincular el usuario en MySQL:', errUsuario.code || errUsuario.name)
             return redirigirConError('No se pudo crear o vincular tu usuario. Revisa que las migraciones de usuarios y OAuth estén aplicadas.')
@@ -517,7 +522,8 @@ app.get('/auth/google/callback', async (req, res) => {
         // Emitimos NUESTRO token de sesión (mismo formato que el login local).
         const token = createAccessToken(usuario)
         // El token viaja en el fragmento (#), nunca en la URL que el servidor ve.
-        res.redirect(`${frontendUrl}/oauth-callback#token=${encodeURIComponent(token)}&usuario=${encodeURIComponent(JSON.stringify({ id: usuario.id, nombre: usuario.nombre, email: usuario.email }))}`)
+        // `nuevo=1` indica que la cuenta se creó ahora (registro con Google).
+        res.redirect(`${frontendUrl}/oauth-callback#token=${encodeURIComponent(token)}&usuario=${encodeURIComponent(JSON.stringify({ id: usuario.id, nombre: usuario.nombre, email: usuario.email }))}&nuevo=${req.usuarioNuevo ? '1' : '0'}`)
     } catch (oauthErr) {
         //openid-client lanza OAuth2Error con error/error_description legibles.
         console.error('[google/callback] paso 4/5 FALLO: procesamiento de la respuesta de autorización')

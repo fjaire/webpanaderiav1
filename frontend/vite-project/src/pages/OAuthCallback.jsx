@@ -13,6 +13,7 @@ const leerFragmento = () => {
   return {
     token: params.get("token"),
     usuario: params.get("usuario"),
+    nuevo: params.get("nuevo"),
     error: params.get("error"),
   };
 };
@@ -22,7 +23,7 @@ const OAuthCallback = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const { token, usuario, error: errorFragmento } = leerFragmento();
+    const { token, usuario, nuevo, error: errorFragmento } = leerFragmento();
 
     if (errorFragmento) {
       setError(errorFragmento);
@@ -40,7 +41,9 @@ const OAuthCallback = () => {
       const usuarioParseado = JSON.parse(usuario);
       localStorage.setItem("accessToken", token);
       localStorage.setItem("usuario", JSON.stringify(usuarioParseado));
-      navigate("/", { replace: true });
+      // Tras registrarse con Google se envía al usuario a la página de inicio;
+      // si solo inició sesión con una cuenta ya existente, vuelve a /login.
+      navigate(nuevo === "1" ? "/" : "/login", { replace: true });
     } catch {
       setError("Datos de sesión corruptos.");
       setTimeout(() => navigate("/login", { replace: true }), 3000);

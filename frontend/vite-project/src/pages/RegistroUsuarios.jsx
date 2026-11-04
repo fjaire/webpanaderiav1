@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { FaGoogle, FaMicrosoft, FaFacebook } from "react-icons/fa";
 
 const BASE_URL = `${import.meta.env.VITE_API_URL || "http://localhost:3000"}/usuarios`;
@@ -219,6 +220,13 @@ const RegistroUsuarios = () => {
             >
               <FaFacebook className="me-2" /> Facebook
             </a>
+          </div>
+
+          <div className="d-flex justify-content-center mt-4">
+            <p className="text-secondary mb-0">
+              ¿Ya tienes una cuenta?{" "}
+              <Link to="/login">Inicia sesión aquí</Link>
+            </p>
           </div>
         </div>
       </div>
